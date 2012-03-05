@@ -5,6 +5,7 @@
 		reloadFrameworkEveryRequest = false,
 		urlReloadVariableName = "reload",
 		useFriendlyUrls = false,
+		flushBufferBeforeOutput = true,
 
 		defaultController = "main",
 		defaultAction = "index",
@@ -30,7 +31,7 @@
 	</cffunction>
 	
 	
-	<cffunction name="onRequestStart" output="true">
+	<cffunction name="onRequestStart" output="false">
 		<cfset var item = {} />
 
 		<cfif variables.frameworkSettings.reloadFrameworkEveryRequest || structKeyExists(url, variables.frameworkSettings.urlReloadVariableName)>
@@ -226,6 +227,7 @@
 		
  		<cfsavecontent variable="body"><cfoutput><cfinclude template="/#variables.frameworkSettings.viewPath#/#lCase(request.context.section)#/#lCase(request.context.method)#.cfm" /></cfoutput></cfsavecontent>
 		<cfif request.doLayout>
+			<cfif variables.frameworkSettings.flushBufferBeforeOutput><cfset getPageContext().getOut().clear() /></cfif>
 			<cfinclude template="/#variables.frameworkSettings.layoutPath#/#request.layoutName#.cfm" />
 		</cfif>
 	</cffunction>
