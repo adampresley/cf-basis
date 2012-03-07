@@ -150,11 +150,11 @@
 		</cfif>
 		
 		<cfif structCount(arguments.params)>
-			<cfset action &= (variables.frameworkSettings.useFriendlyUrls) ? "&" : "/" />
+			<cfset action &= request.context.varDelimiter />
 
 			<cfloop collection="#arguments.params#" item="temp">
 				<cfset action &= temp />
-				<cfset action &= (variables.frameworkSettings.useFriendlyUrls) ? "=" : "/" />
+				<cfset action &= request.context.kvpDelimiter />
 				<cfset action &= arguments.params[temp] />
 			</cfloop>
 		</cfif>
@@ -214,6 +214,14 @@
 
 		<cfset request.context.section = listGetAt(request.rc.action, 1, ".") />
 		<cfset request.context.method = listGetAt(request.rc.action, 2, ".") />
+
+		<cfif variables.frameworkSettings.useFriendlyUrls>
+			<cfset request.context.varDelimiter = "/" />
+			<cfset request.context.kvpDelimiter = "/" />
+		<cfelse>
+			<cfset request.context.varDelimiter = "&" />
+			<cfset request.context.kvpDelimiter = "=" />
+		</cfif>
 	</cffunction>
 
 

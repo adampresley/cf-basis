@@ -22,15 +22,14 @@
 	</cfif>
 	
 	<cfif structCount(arguments.params)>
-		<cfset action &= (variables.frameworkSettings.useFriendlyUrls) ? "&" : "/" />
+		<cfset action &= request.context.varDelimiter />
 
 		<cfloop collection="#arguments.params#" item="temp">
 			<cfset action &= temp />
-			<cfset action &= (variables.frameworkSettings.useFriendlyUrls) ? "=" : "/" />
+			<cfset action &= request.context.kvpDelimiter />
 			<cfset action &= arguments.params[temp] />
 		</cfloop>
 	</cfif>
 
 	<cfreturn action />
 </cffunction>
-
