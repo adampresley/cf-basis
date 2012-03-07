@@ -5,6 +5,7 @@
 		reloadFrameworkEveryRequest = false,
 		urlReloadVariableName = "reload",
 		useFriendlyUrls = false,
+		flushBufferBeforeOutput = true,
 
 		defaultController = "main",
 		defaultAction = "index",
@@ -30,11 +31,12 @@
 	</cffunction>
 	
 	
-	<cffunction name="onRequestStart" output="true">
+	<cffunction name="onRequestStart" output="false">
 		<cfset var item = {} />
 
 		<cfif variables.frameworkSettings.reloadFrameworkEveryRequest || structKeyExists(url, variables.frameworkSettings.urlReloadVariableName)>
 			<cfset onApplicationStart() />
+			<cfset onSessionStart() />
 		</cfif>
 
 		<!---
@@ -68,6 +70,17 @@
 		<cfset validateAccess() />
 		
 		<!---
+			Parse browser-sent language and country information into the request context.
+		--->
+		<cfif structKeyExists(cgi, "http_accept_language")>
+			<cfif listLen(cgi.http_accept_language) GT 0>
+				<cfset request.context.browserLanguage = listGetAt(listGetAt(cgi.http_accept_language, 1), 1, "-") />
+				<cfset request.context.browserCountry = listGetAt(listGetAt(cgi.http_accept_language, 1), 2, "-") />
+			</cfif>
+		</cfif>
+
+
+		<!---
 			Direct references to CFCs will be ignored. AJAX requests that send a header
 			named X-Requested-With with a value of XMLHttpRequest will not render a layout.
 		--->
@@ -96,6 +109,8 @@
 				<cfset session[item.referenceName] = item.cmp />
 			</cfif>
 		</cfloop>
+
+		<cfset sessionStart() />
 	</cffunction>
 
 
@@ -211,6 +226,13 @@
 	</cffunction>
 
 
+	<cffunction name="sessionStart" output="false">
+		<!---
+			Override this method to provide custom session handling on session start
+		--->	
+	</cffunction>
+
+
 	<cffunction name="__buildOutput" access="private" output="true">
 		<cfset var body = "" />
 		<cfset var instance = "" />
@@ -226,6 +248,7 @@
 		
  		<cfsavecontent variable="body"><cfoutput><cfinclude template="/#variables.frameworkSettings.viewPath#/#lCase(request.context.section)#/#lCase(request.context.method)#.cfm" /></cfoutput></cfsavecontent>
 		<cfif request.doLayout>
+			<cfif variables.frameworkSettings.flushBufferBeforeOutput><cfset getPageContext().getOut().clear() /></cfif>
 			<cfinclude template="/#variables.frameworkSettings.layoutPath#/#request.layoutName#.cfm" />
 		</cfif>
 	</cffunction>
@@ -254,7 +277,9 @@
 				</cfif>
 				
 				<cfset holdMe = {
-					cmp = createObject("component", "#pathPrefix#.#listDeleteAt(qryDirs.name, listLen(qryDirs.name, '.'), '.')#").init()
+					cmp = createObject("component", "#pathPrefix#.#listDeleteAt(qryDirs.name, listLen(qryDirs.name, '.'), '.')#").init(
+						frameworkSettings = duplicate(variables.frameworkSettings)
+					)
 				} />
 
 				<cfset structAppend(holdMe, {
@@ -272,9 +297,4 @@
 		</cfif>
 	</cffunction>
 
-
-	<cffunction name="__scanPluginDirectory" output="false">
-		<cfargument name="dir" type="string" required="true" />
-
-	</cffunction>
 </cfcomponent>
