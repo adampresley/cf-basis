@@ -28,6 +28,8 @@
 		<cfset application.theFactory = createObject("component", "TheFactory").init(variables.frameworkSettings) />
 		<cfset application.systemDelimiter = createObject("java", "java.lang.System").getProperty("file.separator").charAt(0) />
 		<cfset __loadPlugins() />
+
+		<cfset applicationStart() />
 	</cffunction>
 	
 	
@@ -211,6 +213,12 @@
 		--->	
 	</cffunction>
 
+
+	<cffunction name="applicationStart" output="false">
+		<!---
+			Override this method to provide custom application handling on application start
+		--->	
+	</cffunction>
 
 	<cffunction name="preRequest" output="false">
 		<!---
