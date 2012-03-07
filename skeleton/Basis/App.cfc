@@ -41,8 +41,12 @@
 
 		<cfif variables.frameworkSettings.reloadFrameworkEveryRequest || structKeyExists(url, variables.frameworkSettings.urlReloadVariableName)>
 			<cfset onApplicationStart() />
+		</cfif>
+
+		<cfif structKeyExists(url, variables.frameworkSettings.urlReloadVariableName)>
 			<cfset onSessionStart() />
 		</cfif>
+		
 
 		<!---
 			The RC scope yo
