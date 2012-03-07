@@ -32,7 +32,10 @@
 		<cfset applicationStart() />
 	</cffunction>
 	
-	
+	<cffunction name="onApplicationEnd" output="false">
+		<cfset applicationEnd() />
+	</cffunction>
+
 	<cffunction name="onRequestStart" output="false">
 		<cfset var item = {} />
 
@@ -115,6 +118,9 @@
 		<cfset sessionStart() />
 	</cffunction>
 
+	<cffunction name="onSessionEnd" output="false">
+		<cfset sessionEnd() />
+	</cffunction>
 
 	<cffunction name="buildUrl" output="false">
 		<cfargument name="path" type="string" required="true" />
@@ -220,12 +226,17 @@
 		--->	
 	</cffunction>
 
+	<cffunction name="applicationEnd" output="false">
+		<!---
+			Override this method to provide custom application handling on application end
+		--->	
+	</cffunction>
+
 	<cffunction name="preRequest" output="false">
 		<!---
 			Override this method to provide custom request handling before access.
 		--->	
 	</cffunction>
-
 
 	<cffunction name="postRequest" output="false">
 		<!---
@@ -233,13 +244,17 @@
 		--->	
 	</cffunction>
 
-
 	<cffunction name="sessionStart" output="false">
 		<!---
 			Override this method to provide custom session handling on session start
 		--->	
 	</cffunction>
 
+	<cffunction name="sessionEnd" output="false">
+		<!---
+			Override this method to provide custom session handling on session end
+		--->	
+	</cffunction>
 
 	<cffunction name="__buildOutput" access="private" output="true">
 		<cfset var body = "" />
