@@ -273,7 +273,7 @@
 		<cfset var instance = "" />
 		<cfset var rc = request.rc />
 		
-		<cfinvoke component="#variables.frameworkSettings.controllerPath#.#request.context.section#" method="init" returnvariable="instance" rc="#request.rc#">
+		<cfinvoke component="#variables.frameworkSettings.controllerPath#.#request.context.section#" method="init" returnvariable="instance" rc="#request.rc#" buildUrl="#buildUrl#" frameworkSettings="#variables.frameworkSettings#">
 		
 		<cfif !structKeyExists(instance, request.context.method)>
 			<cfthrow type="InvalidAction" message="Invalid action" detail="The requested action #rc.action# is invalid." />
