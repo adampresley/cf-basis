@@ -49,7 +49,7 @@
 		<cfif result.success>
 			
 			<cftry>
-				<cfinvoke component="#result.componentPath#" method="init" returnvariable="instance" />
+				<cfinvoke component="#result.componentPath#" method="init" returnvariable="instance" rc="#request.rc#" />
 				<cfset processResult = instance.process() />
 				
 				<cfset result =  processResult />
