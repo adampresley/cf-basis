@@ -4,7 +4,8 @@
 		dsn = "",
 		reloadFrameworkEveryRequest = false,
 		urlReloadVariableName = "reload",
-		useFriendlyUrls = false,
+		useFriendlyUrls = true,
+		removeIndexCfm = false,
 		flushBufferBeforeOutput = true,
 
 		defaultController = "main",
@@ -144,6 +145,9 @@
 		</cfif>
 		
 		<cfif variables.frameworkSettings.useFriendlyUrls>
+			<cfif !variables.frameworkSettings.removeIndexCfm>
+				<cfset action &= "index.cfm/" />
+			</cfif>
 			<cfset action &= "#listGetAt(temp, 1, '.')#/#listGetAt(temp, 2, '.')#" />
 		<cfelse>
 			<cfset action &= "?action=#temp#" />
