@@ -4,6 +4,8 @@
 		dsn = "",
 		reloadFrameworkEveryRequest = false,
 		urlReloadVariableName = "reload",
+		urlReloadPassword = "",
+		urlReloadPasswordVariableName = "pw",
 		useFriendlyUrls = true,
 		removeIndexCfm = false,
 		flushBufferBeforeOutput = true,
@@ -41,7 +43,9 @@
 		<cfset var item = {} />
 
 		<cfif variables.frameworkSettings.reloadFrameworkEveryRequest || structKeyExists(url, variables.frameworkSettings.urlReloadVariableName)>
-			<cfset onApplicationStart() />
+			<cfif !len(variables.frameworkSettings.urlReloadPassword) || (len(variables.frameworkSettings.urlReloadPassword) && structKeyExists(url, variables.frameworkSettings.urlReloadPasswordVariableName) && variables.frameworkSettings.urlReloadPassword EQ url[variables.frameworkSettings.urlReloadPasswordVariableName])>
+				<cfset onApplicationStart() />
+			</cfif>
 		</cfif>
 
 		<cfif structKeyExists(url, variables.frameworkSettings.urlReloadVariableName)>
