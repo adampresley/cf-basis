@@ -6,7 +6,9 @@
 	<cfset this.sessionManagement = true />
 	<cfset this.sessionTimeout = createTimeSpan(0, 1, 0, 0) />
 	
-	<cfset application.dsn = "" />
+	<cffunction name="applicationStart" output="false">
+		<cfset application.dsn = "" />
+	</cffunction>
 
 	<cfset variables.frameworkSettings.reloadFrameworkEveryRequest = true />
 
