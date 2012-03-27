@@ -61,7 +61,7 @@
 				<!--- 
 					Call any custom error handling
 				--->
-				<cfset onAjaxError(cfcatch) />
+				<cfset structAppend(result, onAjaxError(cfcatch)) />
 			</cfcatch>
 			</cftry>
 			
