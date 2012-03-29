@@ -11,5 +11,9 @@
 			<cfthrow type="custom" message="You are an invalid user, and must be logged in." />
 		</cfif>
 	</cffunction>
-
+	<cffunction name="onAjaxError" output="false">
+		<cfargument name="errorInfo" />
+		<!--- do something like logging the error --->
+		<!--- <cflog text="#errorInfo.message#" application="yes"  type ="error" /> --->
+	</cffunction> 
 </cfcomponent>
