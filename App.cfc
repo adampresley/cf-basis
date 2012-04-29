@@ -144,7 +144,11 @@
 			<cfif listLen(arguments.path, ".") LT 1>
 				<cfset temp &= defaultAction />
 			<cfelse>
-				<cfset temp &= ".#variables.frameworkSettings.defaultAction#" />
+				<cfif find(".", temp) EQ 1>
+					<cfset temp = listGetAt(request.rc.action, 1, ".") & temp />
+				<cfelse>
+					<cfset temp &= ".#variables.frameworkSettings.defaultAction#" />
+				</cfif>
 			</cfif>
 		</cfif>
 		
