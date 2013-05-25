@@ -66,8 +66,11 @@
 			</cftry>
 			
 		</cfif>
-		
-		<cfoutput>#serializeJson(result)#</cfoutput>
+		<cfif isQuery(result)>
+			<cfoutput>#serializeJson(result,true)#</cfoutput>
+		<cfelse>
+			<cfoutput>#serializeJson(result)#</cfoutput>
+		</cfif>
 	</cffunction>
 
 
